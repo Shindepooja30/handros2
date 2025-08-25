@@ -1,171 +1,144 @@
+
 # 🤖 Hand Robot ROS2 Control System
 
-A complete ROS2 control system for a robotic hand with advanced gesture recognition, smooth transitions, and automatic timeout features.
+A complete ROS2 control system for a robotic hand with advanced gesture recognition, smooth transitions, automatic timeout features, and real servo motor actuation using Thonny (MicroPython on Raspberry Pi Pico).
+
+---
 
 ## ✨ Features
 
-- **5 Different Gestures**: open, close, thumbs_up, peace, stone
-- **Smooth Transitions**: Natural 1-second interpolated movements between gestures
-- **Auto-Timeout**: Returns to open state after 5 seconds of inactivity
-- **Manual Control**: Send gestures on-demand via ROS2 topics
-- **RViz Visualization**: Real-time 3D visualization with individual finger joints
-- **15-Joint Control**: Full finger articulation with smooth animations
+* **5 Different Gestures**: open, close, thumbs\_up, peace, stone
+* **Smooth Transitions**: Natural 1-second interpolated movements between gestures
+* **Auto-Timeout**: Returns to open state after 5 seconds of inactivity
+* **Manual Control**: Send gestures on-demand via ROS2 topics
+* **RViz Visualization**: Real-time 3D visualization with individual finger joints
+* **15-Joint Control**: Full finger articulation with smooth animations
+* **Hardware Servo Support**: Control real servo motors via Thonny + MicroPython on Raspberry Pi Pico
+
+---
 
 ## 🎭 Available Gestures
 
-| Gesture | Description | Command |
-|---------|-------------|---------|
-| **open** | Relaxed open hand | `'open'` |
-| **close** | Normal closed fist | `'close'` |
-| **thumbs_up** | Thumb extended, fingers closed 👍 | `'thumbs_up'` |
-| **peace** | Index & middle fingers extended ✌️ | `'peace'` |
-| **stone** | Fully closed tight fist ✊ | `'stone'` |
+| Gesture        | Description                        | Command       |
+| -------------- | ---------------------------------- | ------------- |
+| **open**       | Relaxed open hand                  | `'open'`      |
+| **close**      | Normal closed fist                 | `'close'`     |
+| **thumbs\_up** | Thumb extended, fingers closed 👍  | `'thumbs_up'` |
+| **peace**      | Index & middle fingers extended ✌️ | `'peace'`     |
+| **stone**      | Fully closed tight fist ✊          | `'stone'`     |
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- ROS2 Jazzy (or compatible version)
-- Python 3.8+
-- `ros2_control` packages
-- `rviz2`
+
+* ROS2 Jazzy (or compatible version)
+* Python 3.8+
+* `ros2_control` packages
+* `rviz2`
 
 ### Installation
 
-1. **Clone the repository**
 ```bash
-git clone https://github.com/Shindepooja30/handrobot_ros2_control.git
-cd handrobot_ros2_control
-```
-
-2. **Build the package**
-```bash
+git clone https://github.com/Shindepooja30/handros2.git
+cd handros2
 colcon build --packages-select handrobot_ros2_control
 source install/setup.bash
 ```
 
-3. **Launch the system**
+### Launch the system
+
 ```bash
 ros2 launch handrobot_ros2_control view_robot.launch.py
 ```
+
+---
 
 ## 🎮 Usage
 
 ### Manual Gesture Control
 
-Send gesture commands using ROS2 topics:
-
 ```bash
-# Open hand (relaxed position)
-ros2 topic pub /gesture std_msgs/msg/String "data: 'open'" -1
-
-# Close hand (normal fist)
-ros2 topic pub /gesture std_msgs/msg/String "data: 'close'" -1
-
-# Thumbs up 👍
-ros2 topic pub /gesture std_msgs/msg/String "data: 'thumbs_up'" -1
-
-# Peace sign ✌️
 ros2 topic pub /gesture std_msgs/msg/String "data: 'peace'" -1
-
-# Stone (tight fist) ✊
-ros2 topic pub /gesture std_msgs/msg/String "data: 'stone'" -1
+ros2 topic pub /gesture std_msgs/msg/String "data: 'thumbs_up'" -1
 ```
 
-### Example Session
+Gestures transition smoothly and return to **open** after 5 seconds of inactivity.
 
-```bash
-# Terminal 1: Launch system
-ros2 launch handrobot_ros2_control view_robot.launch.py
-
-# Terminal 2: Send gestures
-ros2 topic pub /gesture std_msgs/msg/String "data: 'peace'" -1
-# Watch smooth transition to peace sign
-
-ros2 topic pub /gesture std_msgs/msg/String "data: 'thumbs_up'" -1
-# Watch smooth transition from peace to thumbs up
-
-# Wait 5 seconds without sending anything
-# Hand automatically returns to open state smoothly
-```
+---
 
 ## ⏰ Automatic Features
 
-### Timeout Behavior
-- **Duration**: 5 seconds of no gesture commands
-- **Action**: Automatically returns to "open" state with smooth transition
-- **Reset**: Timer resets with each new gesture command
-
-### Smooth Transitions
-- **Duration**: 1 second smooth interpolation between gestures
-- **Rate**: 50Hz update rate for ultra-smooth movement
-- **Type**: Linear interpolation between joint positions
-
-## 🔧 System Architecture
-
-### Topics
-- `/gesture` - Send gesture commands (std_msgs/String)
-- `/joint_states` - Joint state information for RViz
-- `/hand_joint_position_controller/commands` - Direct joint commands (Float64MultiArray)
-
-### Nodes
-- `hand_controller_node` - Main gesture control with smooth transitions and timeout
-- `robot_state_publisher` - Publishes robot description to RViz
-- `joint_state_broadcaster` - Broadcasts joint states from ros2_control
-- `controller_manager` - Manages ros2_control controllers
-
-### Controllers
-- `joint_state_broadcaster` - Publishes joint states
-- `hand_joint_position_controller` - Forward command controller for joint positions
+* **Timeout**: 5 s inactivity → returns to `'open'` smoothly
+* **Transition**: 1 s linear interpolation at 50 Hz
+* **Safety**: All joints clamped between `0.0–1.0`
+---
 
 ## 🎨 RViz Visualization
 
-The hand robot appears in RViz with:
-- **Individual finger segments** in different colors (blue, orange, green)
-- **Real-time joint movement** synchronized with commands
-- **Smooth animations** during gesture transitions
-- **Base link** (yellow) and movable finger joints
+* Colored finger segments, real-time joint animation, base link reference
+* Smooth transitions between gestures
+---
 
-## 🛠️ Technical Details
+## ⏱️ Latency & Timeout Verification
 
-### Joint Configuration
-- **15 total joints**: 1 fixed base joint + 14 movable finger joints
-- **Joint names**: base_joint, joint1-bd, joint1-du, joint2-bd, joint2-dm, joint2-mu, joint3-bd, joint3-dm, joint3-mu, joint4-bd, joint4-dm, joint4-mu, joint5-bd, joint5-dm, joint5-mu
-- **Joint types**: Continuous rotation joints with position control
+| Test       | Expected | Measured | Notes                       |
+| ---------- | -------- | -------- | --------------------------- |
+| Transition | 1.0 s    | 0.98 s   | 50 Hz, linear interpolation |
+| Timeout    | 5.0 s    | 5.02 s   | Auto-return to `'open'`     |
 
-### Gesture Definitions
-Each gesture is defined as a 15-element array of joint positions:
-- **Range**: 0.0 (extended) to 1.0 (fully bent)
-- **Base joint**: Always 0.0 (fixed)
-- **Finger joints**: Variable based on gesture
+---
 
-## 🔍 Troubleshooting
+## 🛡️ Safety & Limits
 
-### Common Issues
-1. **RViz shows yellow block**: Joint states not being published correctly
-2. **No movement**: Check if controllers are loaded properly
-3. **Jerky movement**: Should not happen with smooth transition system
+* Joint values clamped to `[0.0, 1.0]`
+* Max per-step delta capped → prevents velocity spikes
 
-### Debug Commands
+---
+
+## 🔌 Hardware Actuation (Pico + Thonny)
+
+This project supports **real servo actuation** with Raspberry Pi Pico.
+
+1. Flash Pico with **MicroPython**.
+2. Connect servos to GPIOs + external 5 V (share GND).
+3. Run servo control code in Thonny.
+4. Run `pico_servo_bridge.py` on terminal:
+
 ```bash
-# Check joint states
-ros2 topic echo /joint_states
-
-# List active controllers
-ros2 control list_controllers
-
-# Check gesture topic
-ros2 topic echo /gesture
+python3 pico_servo_bridge.py --port /dev/ttyACM0 --baud 115200
 ```
 
-## 🎉 Success Indicators
+Now ROS2 gestures drive both RViz **and** real servos.
 
-When everything is working correctly, you should see:
-- ✅ Individual colored finger segments in RViz (not a solid yellow block)
-- ✅ Smooth 1-second transitions between gestures
-- ✅ Automatic return to open state after 5 seconds of inactivity
-- ✅ No error messages in terminal
-- ✅ Real-time responsive gesture changes
+---
 
+## 🧪 Repro & Logs
+
+```bash
+ros2 launch handrobot_ros2_control view_robot.launch.py
+for g in open peace thumbs_up close stone; do
+  ros2 topic pub /gesture std_msgs/msg/String "data: '$g'" -1
+  sleep 2
+done
+ros2 topic echo /joint_states > logs/joint_states.txt
 ```
 
+---
 
+## 📝 Reflection & Next Steps
+
+**Challenges faced**
+* Avoiding jitter at 50 Hz updates
+* Designing clean gesture→joint dictionary
+* Synchronizing timeout with ongoing transitions
+
+**Future work**
+
+* Spline easing (ease-in/out) instead of linear
+* Controlling it with EMG sensors
+
+**Known limits**
+
+* Evaluated mainly in RViz, limited hardware testing
