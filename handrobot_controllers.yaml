@@ -1,0 +1,46 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    hand_joint_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - joint1-bd
+      - joint1-du
+      - joint2-bd
+      - joint2-dm
+      - joint2-mu
+      - joint3-bd
+      - joint3-dm
+      - joint3-mu
+      - joint4-bd
+      - joint4-dm
+      - joint4-mu
+      - joint5-bd
+      - joint5-dm
+      - joint5-mu
+
+hand_joint_position_controller:
+  ros__parameters:
+    joints:
+      - joint1-bd
+      - joint1-du
+      - joint2-bd
+      - joint2-dm
+      - joint2-mu
+      - joint3-bd
+      - joint3-dm
+      - joint3-mu
+      - joint4-bd
+      - joint4-dm
+      - joint4-mu
+      - joint5-bd
+      - joint5-dm
+      - joint5-mu
+    interface_name: position
