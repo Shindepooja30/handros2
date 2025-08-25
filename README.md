@@ -166,24 +166,6 @@ When everything is working correctly, you should see:
 - ✅ No error messages in terminal
 - ✅ Real-time responsive gesture changes
 
-## 📁 Project Structure
-
-```
-handrobot_ros2_control/
-├── handrobot_ros2_control/
-│   ├── hand_controller_node.py      # Main gesture controller
-│   └── gesture_command_publisher.py # Optional gesture publisher
-├── launch/
-│   └── view_robot.launch.py         # Main launch file
-├── config/
-│   └── handrobot_controllers.yaml   # Controller configuration
-├── urdf/
-│   ├── handrobot.urdf              # Robot description
-│   └── ros2_control/
-│       └── handrobot.ros2_control.xacro # ROS2 control configuration
-├── package.xml                      # Package metadata
-├── setup.py                        # Python package setup
-└── CMakeLists.txt                  # Build configuration
 ```
 
 
