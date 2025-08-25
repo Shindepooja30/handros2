@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="HandRobot">
+    
+    <!-- Include material definitions -->
+    <xacro:include filename="$(find handrobot_ros2_control)/urdf/handrobot.materials.xacro" />
+    
+    <!-- Include link creation macros -->
+    <xacro:include filename="$(find handrobot_ros2_control)/urdf/create_link.xacro" />
+    
+    <!-- Include the handrobot description -->
+    <xacro:include filename="$(find handrobot_ros2_control)/urdf/handrobot_description.urdf.xacro" />
+    
+    <!-- Include ros2_control hardware interface -->
+    <xacro:include filename="$(find handrobot_ros2_control)/ros2_control/handrobot.ros2_control.xacro" />
+    <!-- Base world link -->
+    <link name="world" />
+    
+    <!-- Add full robot description under 'world' -->
+    <xacro:handrobot_description parent="world">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:handrobot_description>
+    
+    <!-- Add ros2_control plugin -->
+    <xacro:handrobot_ros2_control name="HandRobot"/>
+  
+
+</robot>
