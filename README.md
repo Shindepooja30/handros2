@@ -153,3 +153,13 @@ Mqtt - emg :344 or less (stone)`
 * Simple threshold-based EMG mapping, not ML-based yet
 
 ---
+Reflection
+
+**Humility (Struggles & Challenges):**
+In the beginning, I faced several difficulties while setting up the ROS2 bridge with VS Code. Initially, the connection didn’t work, and once it connected, I experienced delays. Another issue was with the serial port: when I tried running two codes together, the port only detected one program. I had to close Thonny in order to run the code in VS Code. Later, I discovered that I could run the same code directly in the terminal, which solved that issue. However, lag and delay problems still remained. That’s when I decided to use wireless communication via MQTT. At first, there was still noticeable lag because data from one PC reached my PC with a delay, so the robotic hand wasn’t closing in real time. After experimenting, I managed to fix it by adjusting the timeout to 0.01, which finally made the data flow smoothly and the hand movements synchronized.
+
+**Gratitude (Support & Help):**
+I am grateful for the resources that supported me in this journey. I took guidance from ChatGPT, which helped me troubleshoot step by step, and I also learned a lot from various tutorials and videos on YouTube.
+
+**Honesty/Integrity (Reality of Work):**
+Everything I have written here reflects my real experience during the project. I have not polished or modified the truth for evaluation purposes. The struggles, delays, and fixes I mentioned were exactly what I faced and overcame during development.
