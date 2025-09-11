@@ -1,12 +1,6 @@
-Got it 👍 I’ll extend your README with the **MQTT + EMG sensor integration** part, latency/safety details, and usage examples so that it’s clean and consistent with your current style.
-
-Here’s the updated version with the new sections added:
-
----
-
 # 🤖 Hand Robot ROS2 Control System
 
-A complete ROS2 control system for a robotic hand with advanced gesture recognition, smooth transitions, automatic timeout features, and real servo motor actuation using Thonny (MicroPython on Raspberry Pi Pico).
+A complete ROS2 control system for a robotic hand with advanced gesture recognition, smooth transitions, automatic timeout features.
 
 ---
 
